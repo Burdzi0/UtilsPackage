@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'best.burdzi0'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Burdzi0/UtilsPackage")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GRADLE_USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("GRADLE_PASSWORD")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
